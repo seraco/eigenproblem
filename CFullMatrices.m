@@ -27,9 +27,7 @@ classdef CFullMatrices
                 x = xCoordinate(obj,i);
                 density = obj.materialProperties.densityDistribution(x);
                 area = obj.materialProperties.areaDistribution(x);
-                young = obj.materialProperties.youngDistribution(x);
-                % TODO: Unnecessary to calculate young!
-                element = CElementMatrices(density,area,young,obj.deltaX);
+                element = CElementMatrices(density,area,0,obj.deltaX);
                 elementMass = element.mass();
                 res(i,i) = res(i,i) + elementMass(1,1);
                 res(i,i+1) = res(i,i+1) + elementMass(1,2);
@@ -41,11 +39,9 @@ classdef CFullMatrices
             res = zeros(obj.nElements+1);
             for i=1:obj.nElements
                 x = xCoordinate(obj,i);
-                density = obj.materialProperties.densityDistribution(x);
                 area = obj.materialProperties.areaDistribution(x);
                 young = obj.materialProperties.youngDistribution(x);
-                % TODO: Unnecessary to calculate density!
-                element = CElementMatrices(density,area,young,obj.deltaX);
+                element = CElementMatrices(0,area,young,obj.deltaX);
                 elementStiffness = element.stiffness();
                 res(i,i) = res(i,i) + elementStiffness(1,1);
                 res(i,i+1) = res(i,i+1) + elementStiffness(1,2);
