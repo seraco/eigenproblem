@@ -36,6 +36,12 @@ classdef CMaterialProperties
             %               Left Young's modulus value.
             %           rhoo
             %               Left density value.
+            %           s1
+            %               Constant involved in area distribution.
+            %           s2
+            %               Constant involved in Young's modulus distribution.
+            %           s3
+            %               Constant involved in density distribution.
             %
             % Returns:  obj
             %               CMaterialProperties object with initilized
