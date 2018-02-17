@@ -6,6 +6,8 @@ classdef CElementMatrices
     %
     % Methods:  CElementMatrices
     %               Constructor of the class.
+    %           xCoordinate
+    %               Gets x coordinate of the current element.
     %           mass
     %               Mass matrix.
     %           stiffness
@@ -39,6 +41,10 @@ classdef CElementMatrices
             obj.deltaX = dtx;
         end
         function res = xCoordinate(obj)
+            % Summary:  Gets the x coordinate of the current element.
+            %
+            % Returns:  res
+            %               The x coordinate.
             res = (obj.iElement-0.5)*obj.deltaX;
         end
         function res = mass(obj)
