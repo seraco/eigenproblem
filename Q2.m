@@ -12,3 +12,6 @@ ful = CFullMatrices(L,N,mat);
 
 M = ful.mass();
 K = ful.stiffness();
+
+[eigVectorsMass,eigValuesMass] = eig(M);
+[eigVectorsStiffness,eigValuesStiffness] = eig(K);
