@@ -24,10 +24,7 @@ classdef CFullMatrices
         function res = mass(obj)
             res = zeros(obj.nElements+1);
             for i=1:obj.nElements
-                x = xCoordinate(obj,i);
-                density = obj.materialProperties.densityDistribution(x);
-                area = obj.materialProperties.areaDistribution(x);
-                element = CElementMatrices(density,area,0,obj.deltaX);
+                element = CElementMatrices(obj.materialProperties,i,obj.deltaX);
                 elementMass = element.mass();
                 res(i,i) = res(i,i) + elementMass(1,1);
                 res(i,i+1) = res(i,i+1) + elementMass(1,2);
@@ -38,10 +35,7 @@ classdef CFullMatrices
         function res = stiffness(obj)
             res = zeros(obj.nElements+1);
             for i=1:obj.nElements
-                x = xCoordinate(obj,i);
-                area = obj.materialProperties.areaDistribution(x);
-                young = obj.materialProperties.youngDistribution(x);
-                element = CElementMatrices(0,area,young,obj.deltaX);
+                element = CElementMatrices(obj.materialProperties,i,obj.deltaX);
                 elementStiffness = element.stiffness();
                 res(i,i) = res(i,i) + elementStiffness(1,1);
                 res(i,i+1) = res(i,i+1) + elementStiffness(1,2);

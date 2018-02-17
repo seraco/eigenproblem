@@ -16,31 +16,30 @@ classdef CElementMatrices
     % License:  MIT
 
     properties
-        density
-        area
-        young
-        deltaX
+        materialProperties  % properties of the element's material
+        iElement            % index of the current element
+        deltaX              % increment of x coordinate in the element
     end
 
     methods
-        function obj = CElementMatrices(rho,A,E,dtx)
+        function obj = CElementMatrices(material,i,dtx)
             % Summary:  Constructor. Initialises the properties of the object.
             %
-            % Args:     rho
-            %               Density of the element.
-            %           A
-            %               Cross section of the element.
-            %           E
-            %               Young's modulus of the element.
+            % Args:     material
+            %               Properties of the material of the element.
+            %           i
+            %               Index of current element.
             %           dtx
             %               Increment of x coordinate in the element.
             %
             % Returns:  obj
             %               CElementMatrices object with initilized properties.
-            obj.density = rho;
-            obj.area = A;
-            obj.young = E;
+            obj.materialProperties = material;
+            obj.iElement = i;
             obj.deltaX = dtx;
+        end
+        function res = xCoordinate(obj)
+            res = (obj.iElement-0.5)*obj.deltaX;
         end
         function res = mass(obj)
             % Summary:  Method to calculate the mass matrix of the element.
@@ -48,7 +47,11 @@ classdef CElementMatrices
             % Returns:  res
             %               The mass matrix.
             res = [2 1; 1 2];
-            res = res*obj.density*obj.area*obj.deltaX/6;
+            x = xCoordinate(obj);
+            disp(obj.materialProperties)
+            density = obj.materialProperties.densityDistribution(x);
+            area = obj.materialProperties.areaDistribution(x);
+            res = res*density*area*obj.deltaX/6;
         end
         function res = stiffness(obj)
             % Summary:  Method to calculate the stiffness matrix of the element.
@@ -56,7 +59,10 @@ classdef CElementMatrices
             % Returns:  res
             %               The stiffness matrix.
             res = [1 -1; -1 1];
-            res = res*obj.young*obj.area/obj.deltaX;
+            x = xCoordinate(obj);
+            young = obj.materialProperties.youngDistribution(x);
+            area = obj.materialProperties.areaDistribution(x);
+            res = res*young*area/obj.deltaX;
         end
     end
 
